@@ -10,20 +10,16 @@ import java.util.List;
 public class SocialMediaServiceImpl implements SocialMediaService {
 
     private final DataBase dataBase = new DataBase();
-    private final PersonServiceImpl personService = new PersonServiceImpl();
+    private  PersonServiceImpl personService;
 
+    public SocialMediaServiceImpl(PersonServiceImpl personService) {
+        this.personService = personService;
+    }
 
     @Override
     public void assignSocialMediaToPerson(Long idPerson, Long id) {
-        for (Person person: dataBase.getPersonList()){
-            if (person.getId().equals(idPerson)){
-                for (SocialMedia socialMedia: dataBase.getSocialMedia()){
-                    if (socialMedia.getId().equals(id)){
-                        person.getSocialMedia().add(socialMedia);
-                    }
-                }
-            }
-        }
+        Person personById = personService.getPersonById(idPerson);
+        personById.getSocialMedia().add(getSocialMediaById(id));
     }
 
     @Override
@@ -45,12 +41,8 @@ public class SocialMediaServiceImpl implements SocialMediaService {
 
     @Override
     public List<SocialMedia> getAllSocialMediaByPersonId(Long personId) {
-        for (Person person: dataBase.getPersonList()){
-            if (person.getId().equals(personId)){
-                return person.getSocialMedia();
-            }
-        }
-        return null;
+        Person personById = personService.getPersonById(personId);
+        return personById.getSocialMedia();
     }
 
     @Override

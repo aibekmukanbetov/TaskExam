@@ -15,8 +15,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         PersonServiceImpl personService = new PersonServiceImpl();
-        SocialMediaServiceImpl socialMediaService = new SocialMediaServiceImpl();
-        CarServiceImpl carService = new CarServiceImpl();
+        SocialMediaServiceImpl socialMediaService = new SocialMediaServiceImpl(personService);
+        CarServiceImpl carService = new CarServiceImpl(personService);
 
         int n;
         do {
@@ -134,9 +134,6 @@ public class Main {
                     System.out.println("Введите id Человека куда хотите добавить: ");
                     Scanner scanner16 = new Scanner(System.in);
                     Long persId = scanner16.nextLong();
-                    System.out.println("Введите id car: ");
-                    Scanner scanner17 =new Scanner(System.in);
-                    Long idCar = scanner17.nextLong();
                     System.out.println("Введите название car: ");
                     Scanner scanner25 = new Scanner(System.in);
                     String nameCar = scanner25.nextLine();
@@ -179,6 +176,6 @@ public class Main {
                     System.out.println("EXIT");
                     break;
             }
-        }while (n!=17);
+        }while (n!=18);
     }
 }

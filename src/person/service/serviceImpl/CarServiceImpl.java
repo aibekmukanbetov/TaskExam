@@ -1,24 +1,25 @@
 package person.service.serviceImpl;
 
-import person.dataBase.DataBase;
+
 import person.model.Car;
 import person.model.Person;
 import person.service.CarService;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class CarServiceImpl implements CarService {
-    private final  DataBase dataBase = new DataBase();
-    private final PersonServiceImpl personService = new PersonServiceImpl();
+
+    private PersonServiceImpl personService;
+
+    public CarServiceImpl(PersonServiceImpl personService) {
+        this.personService = personService;
+    }
 
     @Override
     public void saveCar(Long id, Car car) {
-        for (Person person: dataBase.getPersonList()){
-            if (person.getId().equals(id)){
-                person.getCars().add(car);
-            }
-        }
+        Person personById = personService.getPersonById(id);
+        personById.getCars().add(car);
     }
 
     @Override
@@ -30,9 +31,9 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car getCarById(Long idCar){
         Car car1 = null;
-        for (Person person: dataBase.getPersonList()){
+        for (Person person: personService.getAllPerson()){
             for (Car car: person.getCars()){
-                if (car.getId()==idCar){
+                if (car.getId().equals(idCar)){
                     car1=car;
                 }
             }
@@ -49,7 +50,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public String deleteCarById(Long id) {
-        for (Person person: dataBase.getPersonList()){
+        for (Person person: personService.getAllPerson()){
             person.getCars().remove(getCarById(id));
         }
         return "Успешно удален";
